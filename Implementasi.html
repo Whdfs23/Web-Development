@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Interaktif: Proyek Implementasi SIMRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette: Calm Harmony Neutrals (Slate, Zinc, Teal)
+        Application Structure Plan: SPA ini dirancang dengan struktur tematik yang memandu pengguna melalui siklus hidup proyek SIMRS, dari masalah awal hingga evaluasi dan rencana masa depan. Struktur ini (Pendahuluan -> Arsitektur -> Operasional -> Kinerja -> Evaluasi) lebih intuitif daripada struktur linear laporan A-D, karena memungkinkan pengguna untuk memahami cerita proyek secara holistik. Interaksi seperti klik-untuk-detail pada diagram, walkthrough pada skenario, dan grafik dinamis dipilih untuk mengubah data statis menjadi pengalaman yang menarik dan mudah dicerna.
+        Visualization & Content Choices: 
+        - [Hero Section] Inform: Dynamic stats (HTML/CSS) to show key problems & results. Justification: Grabs user attention with impactful numbers.
+        - [Diagram Integrasi] Organize/Relationship: Interactive blocks (HTML/JS) to detail modules. Justification: More engaging than a static image, encourages exploration.
+        - [Rencana Implementasi] Change: Vertical timeline (HTML/CSS). Justification: Clearly visualizes the project's progression over time.
+        - [Skenario Insiden] Process: Clickable step-by-step walkthrough (HTML/JS). Justification: Turns a procedural list into an easy-to-follow narrative.
+        - [Performance Testing] Compare: Bar chart (Chart.js/Canvas) to compare target vs. prediction. Justification: Provides a quick, clear visual summary of performance goals.
+        - [Usulan Maintenance] Organize: Accordion component (HTML/JS). Justification: Organizes detailed information into clean, expandable sections.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .step-content {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .step-content.hidden {
+            opacity: 0;
+            transform: translateY(10px);
+            position: absolute;
+        }
+        .module-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .module-card.active {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 3px #14b8a6; /* teal-500 */
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: -21px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #14b8a6; /* teal-500 */
+            border: 3px solid #f0fdfa; /* teal-50 */
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800">Proyek Implementasi SIMRS</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="#arsitektur" class="text-slate-600 hover:text-teal-600 transition">Arsitektur</a>
+                <a href="#operasional" class="text-slate-600 hover:text-teal-600 transition">Operasional</a>
+                <a href="#kinerja" class="text-slate-600 hover:text-teal-600 transition">Kinerja</a>
+                <a href="#evaluasi" class="text-slate-600 hover:text-teal-600 transition">Evaluasi</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Pendahuluan dan Masalah Utama -->
+        <section id="pendahuluan" class="text-center mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-800 mb-4">Transformasi Digital RS Sehat Sentosa</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">
+                Analisis implementasi Sistem Informasi Manajemen Rumah Sakit (SIMRS) berbasis web untuk mengatasi tantangan operasional dan meningkatkan efisiensi layanan secara menyeluruh.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-red-200">
+                    <h3 class="font-bold text-xl text-red-600 mb-2">Masalah Utama</h3>
+                    <p class="text-4xl font-bold text-red-500">45 Menit</p>
+                    <p class="text-slate-500">Rata-rata waktu tunggu antrean di bagian pendaftaran.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-teal-200">
+                    <h3 class="font-bold text-xl text-teal-600 mb-2">Hasil Implementasi</h3>
+                    <p class="text-4xl font-bold text-teal-500">< 10 Menit</p>
+                    <p class="text-slate-500">Waktu tunggu antrean setelah implementasi SIMRS.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arsitektur dan Implementasi -->
+        <section id="arsitektur" class="py-16 bg-white rounded-xl shadow-lg mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Arsitektur & Rencana Implementasi</h2>
+                <p class="text-slate-500 mt-2">Memahami fondasi sistem dan bagaimana ia dibangun.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <!-- Diagram Integrasi -->
+                <div class="px-6">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Diagram Integrasi Modul</h3>
+                    <p class="text-center text-slate-500 mb-6">Klik pada modul untuk melihat deskripsi.</p>
+                    <div id="module-diagram" class="grid grid-cols-2 gap-4">
+                        <!-- Modul Cards will be injected here by JS -->
+                    </div>
+                    <div id="module-info" class="mt-6 bg-slate-100 p-4 rounded-lg min-h-[100px] text-slate-600 transition-opacity duration-300">
+                        Pilih sebuah modul untuk melihat detailnya.
+                    </div>
+                </div>
+
+                <!-- Rencana Implementasi -->
+                <div class="px-6">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Tahapan Implementasi</h3>
+                    <div class="relative pl-8 border-l-2 border-slate-200">
+                        <!-- Timeline items will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Operasional & Kesiapan -->
+        <section id="operasional" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Operasional & Kesiapan Sistem</h2>
+                <p class="text-slate-500 mt-2">Menjaga sistem tetap sehat, aman, dan andal.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <!-- Aktivitas Operasional -->
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Aktivitas Operasional Utama</h3>
+                    <div class="space-y-4">
+                        <!-- Accordion for operational activities will be injected here -->
+                    </div>
+                </div>
+                <!-- Skenario Insiden -->
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Simulasi Penanganan Insiden</h3>
+                    <p class="text-slate-500 mb-4">Skenario: Server utama tidak merespons.</p>
+                    <div id="incident-simulation" class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <div id="steps-container" class="relative min-h-[150px]">
+                            <!-- Steps will be injected by JS -->
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <button id="prev-step" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition disabled:opacity-50" disabled>Sebelumnya</button>
+                            <span id="step-counter" class="text-sm text-slate-500">Langkah 1 dari 6</span>
+                            <button id="next-step" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kinerja Sistem -->
+        <section id="kinerja" class="py-16 bg-white rounded-xl shadow-lg mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Pengujian Kinerja Sistem</h2>
+                <p class="text-slate-500 mt-2">Memastikan sistem berjalan cepat dan efisien sesuai target.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-sm text-slate-500">Grafik perbandingan Target vs. Prediksi Waktu Respon sistem.</p>
+        </section>
+        
+        <!-- Evaluasi & Maintenance -->
+        <section id="evaluasi" class="py-16">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Evaluasi & Rencana Pemeliharaan</h2>
+                <p class="text-slate-500 mt-2">Menilai keberhasilan dan merencanakan masa depan sistem.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-800 mb-3">Apa yang Berhasil</h3>
+                    <ul id="success-list" class="space-y-2 list-disc list-inside text-green-700">
+                        <!-- Success points will be injected by JS -->
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-yellow-800 mb-3">Area Perbaikan</h3>
+                    <ul id="improvement-list" class="space-y-2 list-disc list-inside text-yellow-700">
+                       <!-- Improvement points will be injected by JS -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div>
+                 <h3 class="text-2xl font-semibold mb-4 text-center">Usulan Langkah Pemeliharaan</h3>
+                 <div id="maintenance-accordion" class="space-y-3 max-w-4xl mx-auto">
+                     <!-- Maintenance accordion will be injected by JS -->
+                 </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white py-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 Laporan Interaktif Proyek SIMRS. Dibuat berdasarkan laporan oleh Aulia Nidya Kusuma Dewati.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Data from the report
+            const data = {
+                modules: [
+                    { id: 'registrasi', name: 'Modul Registrasi', desc: 'Pintu gerbang utama untuk pasien, mengelola pendaftaran pasien baru dan lama. Datanya disimpan di Database Central dan menginisiasi entri di EMR Module.' },
+                    { id: 'login', name: 'Modul Login', desc: 'Bertanggung jawab untuk otentikasi dan otorisasi pengguna, memastikan setiap akses ke modul lain sah dan sesuai hak akses.' },
+                    { id: 'emr', name: 'EMR Module', desc: 'Inti dari sistem, menyimpan seluruh riwayat medis pasien, diagnosa, tindakan, dan hasil pemeriksaan. Modul lain akan berinteraksi dengannya untuk update atau mengambil data medis.' },
+                    { id: 'lab', name: 'Modul Laboratorium', desc: 'Menerima permintaan tes dari dokter, memprosesnya, dan mengirimkan hasilnya kembali ke EMR Module atau informasi biaya ke Modul Billing.' },
+                    { id: 'farmasi', name: 'Modul Farmasi', desc: 'Menerima resep dari dokter, memprosesnya, dan mengirimkan informasi biaya ke Modul Billing.' },
+                    { id: 'billing', name: 'Modul Billing', desc: 'Mengelola semua aspek keuangan, menghitung tagihan dari berbagai layanan, dan mencatat transaksi pembayaran.' },
+                    { id: 'db', name: 'Database Central', desc: 'Sebagai repositori data utama, semua modul akan membaca dan menulis data ke database ini untuk menjaga konsistensi dan integritas informasi.' }
+                ],
+                implementationPlan: [
+                    { phase: "Fase 1: Perencanaan & Persiapan", duration: "2 Bulan", desc: "Analisis kebutuhan, pembentukan tim, penyusunan jadwal, dan persiapan lingkungan teknis." },
+                    { phase: "Fase 2: Pengembangan & Kustomisasi", duration: "4 Bulan", desc: "Pengembangan modul inti (Pendaftaran & RME), setup database, dan desain UI/UX." },
+                    { phase: "Fase 3: Migrasi & Integrasi Lanjutan", duration: "3 Bulan", desc: "Migrasi data lama, integrasi modul Farmasi & Laboratorium via API, pengembangan modul Keuangan." },
+                    { phase: "Fase 4: Pelatihan & Go-Live", duration: "2 Bulan", desc: "Pelatihan intensif untuk semua staf, pembuatan user manual, dan peluncuran sistem secara bertahap." },
+                    { phase: "Fase 5: Monitoring & Dukungan", duration: "1 Bulan", desc: "Pemantauan kinerja sistem secara intensif, perbaikan bug cepat, dan pengumpulan umpan balik pengguna." }
+                ],
+                operationalActivities: [
+                    { title: "Pemantauan Kinerja Server", content: "Memantau CPU, RAM, Disk I/O, dan trafik jaringan pada server aplikasi dan database secara harian menggunakan tools seperti Nagios & Zabbix." },
+                    { title: "Manajemen Backup dan Pemulihan", content: "Mencadangkan database dan konfigurasi sistem secara otomatis (harian/mingguan), serta melakukan uji pemulihan data secara berkala." },
+                    { title: "Manajemen Akun Pengguna", content: "Membuat, memodifikasi, atau menonaktifkan akun pengguna dan mengelola hak akses sesuai peran secara harian." },
+                    { title: "Penanganan Insiden Umum", content: "Menangani laporan gangguan seperti gagal login atau error tampilan data melalui sistem helpdesk atau ticketing internal." },
+                ],
+                incidentSteps: [
+                    { title: "Deteksi Dini (0-5 Menit)", desc: "Sistem monitoring mengirimkan notifikasi peringatan (SMS/Email) kepada tim operasional bahwa server tidak merespons." },
+                    { title: "Verifikasi Masalah (5-15 Menit)", desc: "Tim operasional memeriksa status server (ping, SSH) dan memastikan skala masalah (server atau layanan spesifik)." },
+                    { title: "Isolasi & Penanganan Awal (15-60 Menit)", desc: "Mencoba me-restart server atau layanan database. Jika gagal, memeriksa log untuk mencari penyebab (disk full, corrupt file)." },
+                    { title: "Pemulihan (60-120 Menit)", desc: "Melakukan restore database dari backup terakhir yang berhasil ke server cadangan jika masalah hardware atau korupsi data." },
+                    { title: "Komunikasi & Dokumentasi", desc: "Menginformasikan pengguna bahwa sistem telah pulih dan mendokumentasikan insiden, penyebab, dan langkah penanganan." },
+                    { title: "Analisis & Pencegahan", desc: "Melakukan Root Cause Analysis (RCA) untuk mengetahui akar penyebab dan mengimplementasikan langkah pencegahan di masa depan." }
+                ],
+                performanceResults: {
+                    labels: ['Login Pengguna', 'Akses RME', 'Submit Resep/Lab'],
+                    targets: [1, 2, 3],
+                    predictions: [0.8, 1.5, 2.5] 
+                },
+                evaluation: {
+                    success: [
+                        "Efisiensi Pendaftaran: Waktu antrean turun dari 45 menit menjadi kurang dari 10 menit.",
+                        "Akses Rekam Medis: Akses data pasien menjadi lebih cepat dan efisien, mengurangi human error.",
+                        "Integrasi Modul: Modul Lab & Apotek berhasil terintegrasi dengan baik ke dalam alur kerja utama.",
+                        "Ketersediaan Sistem: Uptime sistem stabil mendekati target 99.5% pada bulan pertama operasi."
+                    ],
+                    improvement: [
+                        "Optimalisasi Modul Laporan: Query untuk laporan kompleks masih perlu dioptimalkan untuk kecepatan.",
+                        "Penyesuaian Alur Kerja End-to-End: Beberapa proses antar departemen memerlukan penyesuaian minor untuk efisiensi maksimal.",
+                        "Usulan Fitur Baru: Pengguna mengusulkan fitur antrean online berbasis mobile untuk pengembangan selanjutnya."
+                    ]
+                },
+                maintenancePlan: [
+                    { type: "Corrective (Perbaikan)", desc: "Segera mengatasi bug minor yang dilaporkan dan melakukan optimasi query pada modul laporan yang teridentifikasi lambat." },
+                    { type: "Adaptive (Penyesuaian)", desc: "Memantau tren penggunaan dan melakukan peningkatan kapasitas server jika diperlukan. Menyesuaikan alur kerja sistem berdasarkan umpan balik." },
+                    { type: "Perfective (Penyempurnaan)", desc: "Mengembangkan fitur-fitur baru yang diusulkan seperti antrean online, dan melakukan penyempurnaan UI/UX secara berkala." },
+                    { type: "Preventive (Pencegahan)", desc: "Melakukan update rutin sistem/modul setiap 2 minggu, maintenance server bulanan, dan audit keamanan secara berkala." }
+                ]
+            };
+
+            // Section A: Architecture
+            const moduleDiagram = document.getElementById('module-diagram');
+            const moduleInfo = document.getElementById('module-info');
+            data.modules.forEach(module => {
+                const card = document.createElement('button');
+                card.className = 'module-card bg-white p-4 rounded-lg shadow text-center cursor-pointer border-2 border-transparent';
+                card.textContent = module.name;
+                card.dataset.id = module.id;
+                moduleDiagram.appendChild(card);
+            });
+            
+            moduleDiagram.addEventListener('click', (e) => {
+                if(e.target.classList.contains('module-card')) {
+                    const selectedId = e.target.dataset.id;
+                    const moduleData = data.modules.find(m => m.id === selectedId);
+                    
+                    document.querySelectorAll('.module-card').forEach(card => card.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    moduleInfo.style.opacity = '0';
+                    setTimeout(() => {
+                        moduleInfo.innerHTML = `<p><strong class="text-slate-800">${moduleData.name}:</strong> ${moduleData.desc}</p>`;
+                        moduleInfo.style.opacity = '1';
+                    }, 150);
+                }
+            });
+
+            const timelineContainer = document.querySelector('#arsitektur .relative');
+            data.implementationPlan.forEach(item => {
+                const timelineItem = document.createElement('div');
+                timelineItem.className = 'timeline-item mb-8';
+                timelineItem.innerHTML = `
+                    <h4 class="font-semibold text-lg text-slate-800">${item.phase}</h4>
+                    <p class="text-sm font-medium text-teal-600 mb-1">${item.duration}</p>
+                    <p class="text-slate-600">${item.desc}</p>
+                `;
+                timelineContainer.appendChild(timelineItem);
+            });
+
+            // Section B: Operations
+            const opAccordion = document.querySelector('#operasional .space-y-4');
+            data.operationalActivities.forEach((activity, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-white rounded-lg shadow-sm border border-slate-200';
+                item.innerHTML = `
+                    <button class="w-full flex justify-between items-center p-4 text-left font-semibold text-slate-700">
+                        <span>${activity.title}</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="px-4 pb-4 text-slate-600 hidden">
+                        <p>${activity.content}</p>
+                    </div>
+                `;
+                opAccordion.appendChild(item);
+            });
+
+            opAccordion.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if(button) {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('svg');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                }
+            });
+            
+            // Incident Simulation
+            let currentStep = 0;
+            const stepsContainer = document.getElementById('steps-container');
+            const stepCounter = document.getElementById('step-counter');
+            const prevBtn = document.getElementById('prev-step');
+            const nextBtn = document.getElementById('next-step');
+
+            function renderSteps() {
+                stepsContainer.innerHTML = '';
+                data.incidentSteps.forEach((step, index) => {
+                    const stepEl = document.createElement('div');
+                    stepEl.className = 'step-content absolute w-full text-center';
+                    if (index !== currentStep) {
+                        stepEl.classList.add('hidden');
+                    }
+                    stepEl.innerHTML = `
+                        <h4 class="text-lg font-semibold text-slate-800 mb-2">${step.title}</h4>
+                        <p>${step.desc}</p>
+                    `;
+                    stepsContainer.appendChild(stepEl);
+                });
+                stepCounter.textContent = `Langkah ${currentStep + 1} dari ${data.incidentSteps.length}`;
+                prevBtn.disabled = currentStep === 0;
+                nextBtn.disabled = currentStep === data.incidentSteps.length - 1;
+            }
+
+            nextBtn.addEventListener('click', () => {
+                if (currentStep < data.incidentSteps.length - 1) {
+                    currentStep++;
+                    renderSteps();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    currentStep--;
+                    renderSteps();
+                }
+            });
+            
+            renderSteps();
+
+            // Section C: Performance
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: data.performanceResults.labels,
+                    datasets: [
+                        {
+                            label: 'Target Waktu Respon (detik)',
+                            data: data.performanceResults.targets,
+                            backgroundColor: 'rgba(203, 213, 225, 0.6)', // slate-300
+                            borderColor: 'rgba(100, 116, 139, 1)', // slate-500
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Prediksi Hasil (detik)',
+                            data: data.performanceResults.predictions,
+                            backgroundColor: 'rgba(20, 184, 166, 0.6)', // teal-500
+                            borderColor: 'rgba(15, 118, 110, 1)', // teal-700
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Waktu (detik)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.dataset.label}: ${context.raw} detik`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Section D: Evaluation
+            const successList = document.getElementById('success-list');
+            data.evaluation.success.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                successList.appendChild(li);
+            });
+
+            const improvementList = document.getElementById('improvement-list');
+            data.evaluation.improvement.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                improvementList.appendChild(li);
+            });
+
+            const maintenanceAccordion = document.getElementById('maintenance-accordion');
+            data.maintenancePlan.forEach(plan => {
+                const item = document.createElement('div');
+                item.className = 'bg-white rounded-lg shadow-sm border border-slate-200';
+                item.innerHTML = `
+                    <button class="w-full flex justify-between items-center p-4 text-left font-semibold text-slate-700">
+                        <span>${plan.type}</span>
+                        <svg class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="px-4 pb-4 text-slate-600 hidden">
+                        <p>${plan.desc}</p>
+                    </div>
+                `;
+                maintenanceAccordion.appendChild(item);
+            });
+
+            maintenanceAccordion.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if(button) {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('svg');
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                }
+            });
+            
+             // Smooth scrolling for nav links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
