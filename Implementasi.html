@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Interaktif: Proyek Implementasi SIMRS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-slate-700">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-slate-800">Proyek Implementasi SIMRS</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="#arsitektur" class="text-slate-600 hover:text-teal-600 transition">Arsitektur</a>
+                <a href="#operasional" class="text-slate-600 hover:text-teal-600 transition">Operasional</a>
+                <a href="#kinerja" class="text-slate-600 hover:text-teal-600 transition">Kinerja</a>
+                <a href="#evaluasi" class="text-slate-600 hover:text-teal-600 transition">Evaluasi</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="pendahuluan" class="text-center mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-800 mb-4">Transformasi Digital RS Sehat Sentosa</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto mb-8">
+                Analisis implementasi Sistem Informasi Manajemen Rumah Sakit (SIMRS) berbasis web untuk mengatasi tantangan operasional dan meningkatkan efisiensi layanan secara menyeluruh.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-red-200">
+                    <h3 class="font-bold text-xl text-red-600 mb-2">Masalah Utama</h3>
+                    <p class="text-4xl font-bold text-red-500">45 Menit</p>
+                    <p class="text-slate-500">Rata-rata waktu tunggu antrean di bagian pendaftaran.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border border-teal-200">
+                    <h3 class="font-bold text-xl text-teal-600 mb-2">Hasil Implementasi</h3>
+                    <p class="text-4xl font-bold text-teal-500">< 10 Menit</p>
+                    <p class="text-slate-500">Waktu tunggu antrean setelah implementasi SIMRS.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="arsitektur" class="py-16 bg-white rounded-xl shadow-lg mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Arsitektur & Rencana Implementasi</h2>
+                <p class="text-slate-500 mt-2">Memahami fondasi sistem dan bagaimana ia dibangun.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-12 items-start">
+                <div class="px-6">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Diagram Integrasi Modul</h3>
+                    <p class="text-center text-slate-500 mb-6">Klik pada modul untuk melihat deskripsi.</p>
+                    <div id="module-diagram" class="grid grid-cols-2 gap-4">
+                        </div>
+                    <div id="module-info" class="mt-6 bg-slate-100 p-4 rounded-lg min-h-[100px] text-slate-600 transition-opacity duration-300">
+                        Pilih sebuah modul untuk melihat detailnya.
+                    </div>
+                </div>
+
+                <div class="px-6">
+                    <h3 class="text-2xl font-semibold mb-6 text-center">Tahapan Implementasi</h3>
+                    <div class="relative pl-8 border-l-2 border-slate-200">
+                        </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="operasional" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Operasional & Kesiapan Sistem</h2>
+                <p class="text-slate-500 mt-2">Menjaga sistem tetap sehat, aman, dan andal.</p>
+            </div>
+            <div class="grid lg:grid-cols-2 gap-12 items-start">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Aktivitas Operasional Utama</h3>
+                    <div class="space-y-4">
+                        </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Simulasi Penanganan Insiden</h3>
+                    <p class="text-slate-500 mb-4">Skenario: Server utama tidak merespons.</p>
+                    <div id="incident-simulation" class="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                        <div id="steps-container" class="relative min-h-[150px]">
+                            </div>
+                        <div class="flex justify-between items-center mt-4">
+                            <button id="prev-step" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg transition disabled:opacity-50" disabled>Sebelumnya</button>
+                            <span id="step-counter" class="text-sm text-slate-500">Langkah 1 dari 6</span>
+                            <button id="next-step" class="bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition">Selanjutnya</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="kinerja" class="py-16 bg-white rounded-xl shadow-lg mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Pengujian Kinerja Sistem</h2>
+                <p class="text-slate-500 mt-2">Memastikan sistem berjalan cepat dan efisien sesuai target.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+            <p class="text-center mt-4 text-sm text-slate-500">Grafik perbandingan Target vs. Prediksi Waktu Respon sistem.</p>
+        </section>
+        
+        <section id="evaluasi" class="py-16">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-slate-800">Evaluasi & Rencana Pemeliharaan</h2>
+                <p class="text-slate-500 mt-2">Menilai keberhasilan dan merencanakan masa depan sistem.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-green-50 border border-green-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-green-800 mb-3">Apa yang Berhasil</h3>
+                    <ul id="success-list" class="space-y-2 list-disc list-inside text-green-700">
+                        </ul>
+                </div>
+                <div class="bg-yellow-50 border border-yellow-200 p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold text-yellow-800 mb-3">Area Perbaikan</h3>
+                    <ul id="improvement-list" class="space-y-2 list-disc list-inside text-yellow-700">
+                       </ul>
+                </div>
+            </div>
+            
+            <div>
+                 <h3 class="text-2xl font-semibold mb-4 text-center">Usulan Langkah Pemeliharaan</h3>
+                 <div id="maintenance-accordion" class="space-y-3 max-w-4xl mx-auto">
+                     </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-800 text-white py-6">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 Laporan Interaktif Proyek SIMRS. Dibuat berdasarkan laporan oleh Aulia Nidya Kusuma Dewati.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
